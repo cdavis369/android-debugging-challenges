@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,36 @@ import com.bumptech.glide.Glide;
 import com.codepath.debuggingchallenges.R;
 import com.codepath.debuggingchallenges.models.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
+    Context context;
     private List<Movie> movies;
+
+    public MoviesAdapter(List<Movie> movies, Context context) {
+        this.movies = movies;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+        return new ViewHolder(movieView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Movie movie = movies.get(position);
+        holder.bind(movie);
+    }
+
+    @Override
+    public int getItemCount() {
+        return movies.size();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // only needed because we need to set the background color
@@ -30,23 +57,29 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         TextView tvRating;
         ImageView ivPoster;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             view = itemView;
             tvName = itemView.findViewById(R.id.tvTitle);
             tvRating = itemView.findViewById(R.id.tvRating);
             ivPoster = itemView.findViewById(R.id.ivPoster);
         }
-    }
 
-    public MoviesAdapter(List<Movie> movies) {
-        this.movies = movies;
+        public void bind(Movie movie) {
+            tvName.setText(movie.getTitle());
+            tvRating.setText(""+movie.getRating());
+            Glide.with(context).load(movie.getPosterUrl()).into(ivPoster);
+
+        }
+
     }
+}
+
+/*
 
     @Override
     public int getItemCount() {
-        return 0;
+        return movies.size();
     }
 
     @NonNull
@@ -65,7 +98,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(MoviesAdapter.ViewHolder viewHolder, int position) {
-
+        Log.i("MoviesAdapter", "inOnBindViewHolder");
         Movie movie = movies.get(position);
 
         // Populate the data into the template view using the data object
@@ -85,4 +118,4 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                 viewHolder.ivPoster);
 
     }
-}
+}*/

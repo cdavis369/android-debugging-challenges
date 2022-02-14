@@ -22,7 +22,7 @@
         <activity android:name=".activities.ChangeBackgroundActivity" />
         <activity
             android:name=".activities.ToolbarActivity"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
